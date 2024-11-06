@@ -1,0 +1,29 @@
+node_modules
+# Node.js
+node_modules/
+npm-debug.log
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Env files
+.env
+
+# Database
+*.sqlite
+
+# Build
+build/
+dist/
+
+# Coverage (for testing)
+coverage/
+
+# macOS specific files
+.DS_Store
+
+# Misc
+.idea/
+.vscode/
