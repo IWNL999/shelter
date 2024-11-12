@@ -29,21 +29,6 @@ const Player_stats = sequelize.define('player_stats', {
     baggage: {type: DataTypes.STRING},
 })
 
-const Gender_card = sequelize.define('gender_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING}
-})
-
-const Age_card = sequelize.define('age_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    value: {type: DataTypes.INTEGER, defaultValue: 0}
-})
-
-const Fertile_card = sequelize.define('fertile_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    value: {type: DataTypes.BOOLEAN, defaultValue: true}
-})
-
 const Fobia_card = sequelize.define('fobia_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING}
@@ -138,17 +123,8 @@ Player.belongsTo(User)
 Player.hasOne(Player_stats)
 Player_stats.belongsTo(Player)
 
-Player_stats.hasMany(Gender_card)
-Gender_card.belongsTo(Player_stats)
-
-Player_stats.hasOne(Age_card)
-Age_card.belongsTo(Player_stats)
-
 Player_stats.hasMany(Health_card)
 Health_card.belongsTo(Player_stats)
-
-Player_stats.hasOne(Fertile_card)
-Fertile_card.belongsTo(Player_stats)
 
 Player_stats.hasMany(Hobby_card)
 Hobby_card.belongsTo(Player_stats)
@@ -197,10 +173,7 @@ module.exports = {
     Player_stats,
     Player_room,
     Room,
-    Gender_card,
-    Age_card,
     Health_card,
-    Fertile_card,
     Hobby_card,
     Profession_card,
     Fact1_card,
