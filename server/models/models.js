@@ -30,6 +30,7 @@ const Player_stats = sequelize.define('player_stats', {
     fact2: {type: DataTypes.STRING},
     fobia: {type: DataTypes.STRING},
     baggage: {type: DataTypes.STRING},
+    activeCards: {type: DataTypes.STRING},
     createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
 })
 
@@ -48,7 +49,7 @@ const Fact2_card = sequelize.define('fact2_card', {
     name: {type: DataTypes.STRING, allowNull: false}
 })
 
-const character_card = sequelize.define('character_card', {
+const Character_card = sequelize.define('character_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false}
 })
@@ -134,6 +135,11 @@ const Benefits_card = sequelize.define('benefits_card', {
 })
 
 
+const Active_card = sequelize.define('active_card', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
+    text: {type: DataTypes.STRING}
+})
 
 User.hasOne(Player)
 Player.belongsTo(User)
@@ -162,6 +168,11 @@ Baggage_card.belongsTo(Player_stats)
 Player_stats.hasMany(Fobia_card)
 Fobia_card.belongsTo(Player_stats)
 
+Player_stats.hasOne(Character_card)
+Character_card.belongsTo(Player_stats)
+
+Player_stats.hasMany(Active_card)
+Active_card.belongsTo(Player_stats)
 
 
 Room.belongsToMany(Player, { through: Player_room });
@@ -204,7 +215,8 @@ module.exports = {
     Circumstances_card,
     Benefits_card,
     Game_session,
-    character_card,
+    Character_card,
+    Active_card,
 }
 
 // Добавляем очистку данных старше месяца
