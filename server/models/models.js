@@ -25,6 +25,7 @@ const Player_stats = sequelize.define('player_stats', {
     gender: {type: DataTypes.STRING},
     profession: {type: DataTypes.STRING},
     hobby: {type: DataTypes.STRING},
+    character: {type: DataTypes.STRING},
     fact1: {type: DataTypes.STRING},
     fact2: {type: DataTypes.STRING},
     fobia: {type: DataTypes.STRING},
@@ -43,6 +44,11 @@ const Fact1_card = sequelize.define('fact1_card', {
 })
 
 const Fact2_card = sequelize.define('fact2_card', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false}
+})
+
+const character_card = sequelize.define('character_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false}
 })
@@ -198,6 +204,7 @@ module.exports = {
     Circumstances_card,
     Benefits_card,
     Game_session,
+    character_card,
 }
 
 // Добавляем очистку данных старше месяца
