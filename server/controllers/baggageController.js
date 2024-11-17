@@ -20,6 +20,7 @@ class BaggageController {
             console.error(error);
             return res.status(500).json({ message: "Ошибка при добавлении багажа" });
         }
+        
     }
 }
 

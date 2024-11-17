@@ -3,6 +3,10 @@ const {DataTypes} = require('sequelize')
 const cron = require('node-cron');
 const { Op } = require('sequelize');
 
+
+
+
+
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     login: {type: DataTypes.STRING, unique: true, allowNull: false},
@@ -20,6 +24,7 @@ const Player = sequelize.define('player', {
 const Player_stats = sequelize.define('player_stats', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     health: {type: DataTypes.STRING},
+    severity: {type: DataTypes.STRING},
     age: {type: DataTypes.INTEGER},
     fertile: {type: DataTypes.BOOLEAN},
     gender: {type: DataTypes.STRING},
@@ -46,7 +51,7 @@ const Fact1_card = sequelize.define('fact1_card', {
 
 const Fact2_card = sequelize.define('fact2_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false}
+    name: {type: DataTypes.STRING, allowNull: false, unique: true}
 })
 
 const Character_card = sequelize.define('character_card', {
@@ -55,26 +60,25 @@ const Character_card = sequelize.define('character_card', {
 })
 
 const Baggage_card = sequelize.define('baggage_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
     name: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Hobby_card = sequelize.define('hobby_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
     experience: {type: DataTypes.STRING, defaultValue: "0 лет"}
 })
 
 const Profession_card = sequelize.define('profession_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
     experience: {type: DataTypes.STRING, defaultValue: "0 лет"}
 })
 
 const Health_card = sequelize.define('health_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false},
-    value: {type: DataTypes.STRING, defaultValue: "Идеально здоров"}
 })
 
 
@@ -112,34 +116,38 @@ const Shelter_card = sequelize.define('shelter_card', {
 
 const Danger_card = sequelize.define('danger_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
     text: {type: DataTypes.STRING}
 })
 
 const Shelter_type_card = sequelize.define('shelter_type_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
     text: {type: DataTypes.STRING}
 })
 
 const Circumstances_card = sequelize.define('circumstances_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
     text: {type: DataTypes.STRING}
 })
 
 const Benefits_card = sequelize.define('benefits_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
     text: {type: DataTypes.STRING}
 })
 
 
 const Active_card = sequelize.define('active_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-    text: {type: DataTypes.STRING}
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
+    text: {type: DataTypes.STRING},
+    usage: {type: DataTypes.STRING, allowNull: false, defaultValue: "Только на себя"}
 })
+
+
+
 
 User.hasOne(Player)
 Player.belongsTo(User)
@@ -171,8 +179,9 @@ Fobia_card.belongsTo(Player_stats)
 Player_stats.hasOne(Character_card)
 Character_card.belongsTo(Player_stats)
 
-Player_stats.hasMany(Active_card)
-Active_card.belongsTo(Player_stats)
+Player_stats.hasMany(Active_card, { foreignKey: 'player_stats_id' });
+Active_card.belongsTo(Player_stats, { foreignKey: 'player_stats_id' });
+
 
 
 Room.belongsToMany(Player, { through: Player_room });
@@ -240,3 +249,12 @@ cron.schedule('0 0 * * *', async () => {
         console.error("Ошибка при удалении старых данных:", error);
     }
 });
+
+(async () => {
+    try {
+        await sequelize.sync({ alter: true });
+        console.log('База данных синхронизирована!');
+    } catch (error) {
+        console.error('Ошибка при синхронизации базы данных:', error);
+    }
+})();

@@ -1,7 +1,9 @@
 const BaggageController = require('./baggageController');
-// Добавляйте другие контроллеры по мере необходимости
+const ActiveController = require('./activeController');
+const HealthController = require('./healthController');
 
 module.exports = {
     BaggageController,
-    // Добавляйте другие контроллеры по мере необходимости
+    ActiveController,
+    HealthController, 
 };
