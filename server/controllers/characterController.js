@@ -1,21 +1,21 @@
-const { Fact2_card } = require('../models/models');
+const { Character_card } = require('../models/models');
 
-class Fact2Controller {
+class CharacterController {
     async create(req, res) {
         try {
             const { name } = req.body;
             
             // Проверка, если name — это массив, добавляем сразу несколько
             if (Array.isArray(name)) {
-                const fact2Items = await Fact2_card.bulkCreate(
+                const characterItems = await Character_card.bulkCreate(
                     name.map(item => ({ name: item }))
                 );
-                return res.json(fact2Items);
+                return res.json(characterItems);
             }
 
             // Если name — не массив, добавляем один предмет
-            const fact2 = await Fact2_card.create({ name });
-            return res.json(fact2);
+            const character = await Character_card.create({ name });
+            return res.json(character);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: "Ошибка при добавлении багажа" });
@@ -24,4 +24,4 @@ class Fact2Controller {
     }
 }
 
-module.exports = new Fact2Controller();
+module.exports = new CharacterController();
