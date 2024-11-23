@@ -18,7 +18,7 @@ class Fact2Controller {
             return res.json(fact2);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Ошибка при добавлении багажа" });
+            return res.status(500).json({ message: "Ошибка при добавлении факта" });
         }
         
     }

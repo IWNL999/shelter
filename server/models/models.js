@@ -41,7 +41,7 @@ const Player_stats = sequelize.define('player_stats', {
 
 const Fobia_card = sequelize.define('fobia_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING}
+    name: {type: DataTypes.STRING, unique: false}
 })
 
 const Fact1_card = sequelize.define('fact1_card', {
@@ -51,7 +51,7 @@ const Fact1_card = sequelize.define('fact1_card', {
 
 const Fact2_card = sequelize.define('fact2_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false, unique: true}
+    name: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Character_card = sequelize.define('character_card', {
