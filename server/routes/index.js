@@ -6,6 +6,8 @@ const characterRouter = require('./characterRouter');
 const fact1Router = require('./fact1Router');
 const fact2Router = require('./fact2Router');
 const fobiaRouter = require('./fobiaRouter');
+const hobbyRouter = require('./hobbyRouter');
+const professionRouter = require('./professionRouter');
 
 const router = new Router();
 
@@ -16,5 +18,7 @@ router.use('/character', characterRouter);
 router.use('/fact1', fact1Router);
 router.use('/fact2', fact2Router);
 router.use('/fobia', fobiaRouter);
+router.use('/hobby', hobbyRouter);
+router.use('/profession', professionRouter);
 
 module.exports = router;

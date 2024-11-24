@@ -5,6 +5,8 @@ const CharacterController = require('./characterController');
 const Fact1Controller = require('./fact1Controller');
 const Fact2Controller = require('./fact2Controller');
 const FobiaController = require('./fobiaController');
+const HobbyController = require('./hobbyController');
+const ProfessionController = require('./professionController');
 
 module.exports = {
     BaggageController,
@@ -14,4 +16,6 @@ module.exports = {
     Fact1Controller,
     Fact2Controller,
     FobiaController,
+    HobbyController,
+    ProfessionController,
 };
