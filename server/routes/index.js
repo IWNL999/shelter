@@ -8,6 +8,7 @@ const fact2Router = require('./fact2Router');
 const fobiaRouter = require('./fobiaRouter');
 const hobbyRouter = require('./hobbyRouter');
 const professionRouter = require('./professionRouter');
+const playerStatsRouter = require('./playerStatsRouter');
 
 const router = new Router();
 
@@ -20,5 +21,6 @@ router.use('/fact2', fact2Router);
 router.use('/fobia', fobiaRouter);
 router.use('/hobby', hobbyRouter);
 router.use('/profession', professionRouter);
+router.use('/playerStats', playerStatsRouter);
 
 module.exports = router;

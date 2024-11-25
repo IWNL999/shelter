@@ -7,6 +7,7 @@ const Fact2Controller = require('./fact2Controller');
 const FobiaController = require('./fobiaController');
 const HobbyController = require('./hobbyController');
 const ProfessionController = require('./professionController');
+const PlayerStatsController = require('./playerStatsController');
 
 module.exports = {
     BaggageController,
@@ -18,4 +19,5 @@ module.exports = {
     FobiaController,
     HobbyController,
     ProfessionController,
+    PlayerStatsController,
 };

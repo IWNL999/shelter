@@ -1,7 +1,14 @@
 const Router = require('express');
-const FobiaController = require('../controllers/fobiaController');
 const router = new Router();
+const FobiaController = require('../controllers/fobiaController');
 
-router.post("/", FobiaController.create);
+// POST запрос для создания фобии/фобий
+router.post('/', FobiaController.create);
+
+// GET запрос для получения всех фобий
+router.get('/', FobiaController.getAll);
+
+// GET запрос для получения фобии по ID
+router.get('/:id', FobiaController.getOne);
 
 module.exports = router;
