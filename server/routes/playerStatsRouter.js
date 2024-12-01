@@ -3,9 +3,6 @@ const playerStatsController = require('../controllers/playerStatsController');
 
 const router = new Router();
 
-// Получить все характеристики игроков
-router.get('/', playerStatsController.getAll);
-
 // Создать новую характеристику игрока
 router.post('/', playerStatsController.create);
 

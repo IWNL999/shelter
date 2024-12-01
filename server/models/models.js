@@ -65,16 +65,15 @@ const Baggage_card = sequelize.define('baggage_card', {
 })
 
 const Hobby_card = sequelize.define('hobby_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false, unique: true},
-    experience: {type: DataTypes.STRING, defaultValue: "0 лет"}
-})
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+});
 
 const Profession_card = sequelize.define('profession_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false, unique: true},
-    experience: {type: DataTypes.STRING, defaultValue: "0 лет"}
-})
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+});
+
 
 const Health_card = sequelize.define('health_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},

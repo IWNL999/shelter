@@ -6,61 +6,58 @@ const { PlayerStats,
     Profession_card,
     Fact1_card,
     Fact2_card,
-    Fobia_card,
     Baggage_card,
-    Character_card,
     Active_card,} = require('../models/models');
 const jwt = require('jsonwebtoken');
 const sequelize = require('../db')
-
 class PlayerStatsController {
     // Метод для создания новой характеристики игрока
     async create(req, res) {
         try {
-            const { playerId } = req.body; // Извлекаем playerId из тела запроса
-    
-            // Получаем случайную фобию из таблицы Fobia_card
-            const randomFobia = await Fobia_card.findOne({
-                order: sequelize.random(), // Используем RANDOM() для выбора случайной записи
-            });
-            if (!randomFobia) {
-                return res.status(404).json({ message: 'Фобии не найдены в базе данных' });
+            // Генерация случайного возраста (от 18 до 90 лет)
+            const randomAge = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
+
+            // Функция для генерации случайного опыта (от 18 до возраста игрока)
+            const randomExperience = (minAge, maxAge) => {
+                return Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
+            };
+
+            // Получаем случайные карты
+            const randomFobia = await Fobia_card.findOne({ order: sequelize.random() });
+            const randomCharacter = await Character_card.findOne({ order: sequelize.random() });
+            const randomHealth = await Health_card.findOne({ order: sequelize.random() });
+            const randomHobby = await Hobby_card.findOne({ order: sequelize.random() });
+            const randomProfession = await Profession_card.findOne({ order: sequelize.random() });
+
+            // Проверка на наличие карт
+            if (!randomFobia || !randomCharacter || !randomHealth || !randomHobby || !randomProfession) {
+                return res.status(404).json({ message: 'Не все данные карт найдены в базе' });
             }
 
-            // Получаем случайный характер из таблицы Character_card
-            const randomCharacter = await Character_card.findOne({
-                order: sequelize.random(),
-            });
-            if (!randomCharacter) {
-                return res.status(404).json({ message: 'Характеры не найдены в базе данных' });
+            // Генерация опыта для хобби и профессии
+            const hobbyExperience = randomExperience(18, randomAge);
+            const professionExperience = randomExperience(18, randomAge);
+            let severity = null;
+            if (randomHealth.name !== "идеально здоров") {
+                const healthOptions = ["ремиссия", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"];
+                severity = healthOptions[Math.floor(Math.random() * healthOptions.length)]
             }
 
-            const randomHealth = await Health_card.findOne({
-                order: sequelize.random(),
-            });
-            if (!randomHealth) {
-                return res.status(404).json({ message: 'Характеры не найдены в базе данных' });
-            }
-
-            const randomHobby = await Hobby_card.findOne({
-                order: sequelize.random(),
-            });
-            if (!randomHobby) {
-                return res.status(404).json({ message: 'Характеры не найдены в базе данных' });
-            }
-    
-            // Создаём новую запись в таблице PlayerStats
+            // Создаём запись для PlayerStats
             const newStat = await PlayerStats.create({
-                fobia: randomFobia.name, // Записываем название фобии
-                character: randomCharacter.name, // Записываем название характера
+                fobia: randomFobia.name,
+                character: randomCharacter.name,
                 health: randomHealth.name,
-                hobby: randomHobby
+                hobby: `${randomHobby.name} (${hobbyExperience} лет опыта)`,
+                profession: `${randomProfession.name} (${professionExperience} лет опыта)`,
+                age: randomAge,
+                severity: severity,
             });
-    
-            return res.json(newStat); // Возвращаем созданную запись
+
+            return res.json(newStat);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Ошибка при добавлении характеристики игрока' });
+            return res.status(500).json({ message: 'Ошибка при создании характеристик игрока' });
         }
     }
 
