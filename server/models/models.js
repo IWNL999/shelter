@@ -5,8 +5,6 @@ const { Op } = require('sequelize');
 
 
 
-
-
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     login: {type: DataTypes.STRING, unique: true, allowNull: false},
@@ -74,14 +72,26 @@ const Profession_card = sequelize.define('profession_card', {
     name: { type: DataTypes.STRING, allowNull: false, unique: true },
 });
 
-
 const Health_card = sequelize.define('health_card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false},
 })
 
+const Active_card = sequelize.define('active_card', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
+    text: {type: DataTypes.STRING},
+    usage: {type: DataTypes.STRING, allowNull: false, defaultValue: "Только на себя"}
+})
 
 
+
+
+const PlayerActiveCards = sequelize.define('player_active_cards', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    playerId: { type: DataTypes.INTEGER, allowNull: false },
+    activeCardId: { type: DataTypes.INTEGER, allowNull: false },
+}, { timestamps: false });
 
 const Player_room = sequelize.define('player_room', {
     player_id: { type: DataTypes.INTEGER, primaryKey: true },
@@ -138,12 +148,7 @@ const Benefits_card = sequelize.define('benefits_card', {
 })
 
 
-const Active_card = sequelize.define('active_card', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false, unique: true},
-    text: {type: DataTypes.STRING},
-    usage: {type: DataTypes.STRING, allowNull: false, defaultValue: "Только на себя"}
-})
+
 
 
 
@@ -178,8 +183,8 @@ Fobia_card.belongsTo(Player_stats)
 Player_stats.hasOne(Character_card)
 Character_card.belongsTo(Player_stats)
 
-Player_stats.hasMany(Active_card, { foreignKey: 'player_stats_id' });
-Active_card.belongsTo(Player_stats, { foreignKey: 'player_stats_id' });
+Player_stats.hasMany(PlayerActiveCards, { foreignKey: 'playerId', as: 'associatedCards' });
+PlayerActiveCards.belongsTo(Active_card, { foreignKey: 'activeCardId', as: 'cardDetails' });
 
 
 
